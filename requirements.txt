@@ -1,8 +1,5 @@
 Flask==2.0.1
-<<<<<<< HEAD
-=======
 Werkzeug==2.0.2
->>>>>>> 4434613c3f2df9b1c4955aad133fa1339368c6d1
 Jinja2==3.0.1
 gunicorn==20.1.0
 googlemaps==4.5.3
