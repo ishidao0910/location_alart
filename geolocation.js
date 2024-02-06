@@ -18,3 +18,24 @@ function successCallback(position){
 function errorCallback(error){
     alert("位置情報が取得できませんでした");
 };
+
+function successCallback(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+
+    // APIにリクエストを送信
+    fetch('http://127.0.0.1:5000//convert', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ latitude: latitude, longitude: longitude }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("address").innerHTML = data.address;
+     })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
