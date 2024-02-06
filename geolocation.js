@@ -24,7 +24,7 @@ function successCallback(position) {
     var longitude = position.coords.longitude;
 
     // APIにリクエストを送信
-    fetch('http://127.0.0.1:5000//convert', {
+    fetch('https://location-alart-e86815bc444e.herokuapp.com/convert', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
