@@ -4,15 +4,6 @@ document.getElementById("btn").onclick = function(){
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 };
 
-// 取得に成功した場合の処理
-function successCallback(position){
-    // 緯度を取得し画面に表示
-    var latitude = position.coords.latitude;
-    document.getElementById("latitude").innerHTML = latitude;
-    // 経度を取得し画面に表示
-    var longitude = position.coords.longitude;
-    document.getElementById("longitude").innerHTML = longitude;
-};
 
 // 取得に失敗した場合の処理
 function errorCallback(error){
@@ -25,6 +16,7 @@ function successCallback(position) {
 
     // APIにリクエストを送信
     fetch('https://location-alart-e86815bc444e.herokuapp.com/convert', {
+    // fetch('http://127.0.0.1:5000/convert', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -39,3 +31,45 @@ function successCallback(position) {
         console.error('Error:', error);
     });
 }
+
+function getLocationAndUpdate() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            console.log("緯度: " + lat + ", 経度: " + lng);
+            
+            // ここでサーバーに位置情報を送信する
+            fetch('https://location-alart-e86815bc444e.herokuapp.com/convert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ latitude: lat, longitude: lng }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        }, function(error) {
+            console.error("エラーコード: " + error.code + " - " + error.message);
+        }, {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        });
+    } else {
+        console.error("このブラウザでは位置情報が利用できません。");
+    }
+}
+
+// 0.25時間ごとにgetLocationAndUpdate関数を実行
+setInterval(getLocationAndUpdate, 3600000/4);
+
+// ページロード時にも一度実行
+getLocationAndUpdate();
+
