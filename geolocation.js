@@ -33,6 +33,7 @@ function successCallback(position) {
 }
 
 function getLocationAndUpdate() {
+    console.log("関数が呼び出されました: ", new Date().toLocaleTimeString());
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
             var lat = position.coords.latitude;
