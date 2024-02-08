@@ -25,19 +25,19 @@ def convert():
     data = request.json
     latitude, longitude = data['latitude'], data['longitude']
     gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
-
-    # 距離の計算
     distance = haversine(REGISTERD_LAT, REGISTERD_LNG, latitude, longitude)
-    message_text = "指定された地点は半径2km以内です。" if distance <= 2 else "指定された地点は半径2km以上離れています。"
 
-    # LINEメッセージの送信
-    send_line_message(LINE_CHANNEL_ACCESS_TOKEN, MY_LINE_USER_ID, message_text)
-
-    # 住所の取得
-    results = gmaps.reverse_geocode((latitude, longitude), language='ja')
-    address = results[0].get('formatted_address') if results else '住所が見つかりません'
-
-    return jsonify({'address': address, 'message': message_text})
+    if distance <= 2:
+        return jsonify({'address': "2km以内", 'message': "message_text"})
+    else:
+        results = gmaps.reverse_geocode((latitude, longitude), language='ja')
+        address = results[0].get('formatted_address') if results else '住所が見つかりません'
+        message_text = (
+            f"奴の現在地は、{address}\n"
+             "ここは登録地点から半径2km以上離れています。"
+        )
+        send_line_message(LINE_CHANNEL_ACCESS_TOKEN, MY_LINE_USER_ID, message_text)
+        return jsonify({'address': address, 'message': message_text})
 
 if __name__ == '__main__':
     app.run(debug=True)

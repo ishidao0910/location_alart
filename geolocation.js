@@ -67,8 +67,8 @@ function getLocationAndUpdate() {
     }
 }
 
-// 0.25時間ごとにgetLocationAndUpdate関数を実行
-setInterval(getLocationAndUpdate, 3600000/4);
+// 1分ごとにgetLocationAndUpdate関数を実行
+setInterval(getLocationAndUpdate, 3600000/60);
 
 // ページロード時にも一度実行
 getLocationAndUpdate();
