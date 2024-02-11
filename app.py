@@ -27,14 +27,14 @@ def convert():
     gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
     distance = haversine(REGISTERD_LAT, REGISTERD_LNG, latitude, longitude)
 
-    if distance <= 2:
-        return jsonify({'address': "2km以内", 'message': "message_text"})
+    if distance <= 1:
+        return jsonify({'address': "1km以内", 'message': "message_text"})
     else:
         results = gmaps.reverse_geocode((latitude, longitude), language='ja')
         address = results[0].get('formatted_address') if results else '住所が見つかりません'
         message_text = (
             f"奴の現在地は、{address}\n"
-             "ここは登録地点から半径2km以上離れています。"
+             "ここは登録地点から半径1km以上離れているよ。"
         )
         send_line_message(LINE_CHANNEL_ACCESS_TOKEN, MY_LINE_USER_ID, message_text)
         return jsonify({'address': address, 'message': message_text})
