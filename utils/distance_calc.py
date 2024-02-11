@@ -31,7 +31,7 @@ input_lng = 139.895827
 
 distance = haversine(REGISTERD_LAT, REGISTERD_LNG, input_lat, input_lng)
 
-if distance > 2:
-    print("指定された地点は半径2km以上離れています。")
+if distance > 1:
+    print("指定された地点は半径1km以上離れています。")
 else:
-    print("指定された地点は半径2km以内です。")
+    print("指定された地点は半径1km以内です。")
